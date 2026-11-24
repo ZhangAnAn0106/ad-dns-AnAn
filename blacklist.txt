@@ -317,3 +317,97 @@
 ! ||pstatp.com^                      字节图片/视频 CDN 整域，拦了图全没；只保留 sf3-ttcdn-tos 精确条目
 !
 ! 注: 按 IP 段和按路径拦截 DNS 层做不了，需在其他层实现，涉及域名上面已按域覆盖
+
+! ==========================================================================
+! [今晚自定义规则 2026-11-24 22:50-2026-11-25 02:22] 按软件分组
+! 来源: 小米8 AGH 自定义规则，共 70 条；其中 6 条已在上面黑名单里，不重复加，
+!       下面是新加的 64 条。带 $important 的 5 条在白名单里有放行条目，
+!       不加 $important 会被白名单压住、拦不住；i/is.snssdk.com 拦了可能
+!       影响红果金币任务/设置，先按 AGH 自定义规则时的状态保留，留意一下。
+! ==========================================================================
+
+! --- 红果免费短剧广告 ---
+||v6-reading-ad.qznovelvod.com^
+||v26-reading-ad.qznovelvod.com^
+||v95-se-zjwztc-reading-ad.qznovelvod.com^
+||*-reading-ad.qznovelvod.com^
+
+! --- 红果小游戏 ---
+||minigame3-normal-lf.zijieapi.com^
+||minigame5-normal-lf.zijieapi.com^
+||minigame*-normal-lf.zijieapi.com^
+||lf3-mgsdk-sign.dailygn.com^
+||lf26-mgsdk-sign.dailygn.com^
+||*-mgsdk-sign.dailygn.com^
+||p9-mgsdk-sign.byteimg.com^
+||gms-api.bytedance.com^
+||img.gamecenter.qq.com^
+||de.ad.gameley.com^
+
+! --- 字节穿山甲广告 ---
+||pangolin-dsp-toutiao.com^
+||pangolin-dsp-toutiao-b.com^
+||pglstatp-toutiao-b.com^
+||zlink.ugsdk.cn^
+
+! --- 字节广告签名（白名单放行了 byteimg.com，需 $important 才拦得住）---
+||p3-ad-sign.byteimg.com^$important
+||p6-ad-sign.byteimg.com^$important
+||p9-ad-sign.byteimg.com^$important
+
+! --- 字节追踪与推广 ---
+||mon.toutiaocloud.net^
+||mon.toutiaocloud.com^
+||mon11-misc.amemv.com^
+||i.snssdk.com^$important
+||i-lq.snssdk.com^
+||is.snssdk.com^$important
+||is-lq.snssdk.com^
+||tr.byteurl.cn^
+||tr.byteurl.cn.queniusz.com^
+||tr.byteurl.cn.bytedns1.com^
+||lf-leads-fe-scm.bytecdn.com^
+||www.chengzijianzhan.com^
+||www.chengzijianzhan.com.queniuum.com^
+||toufang.huixuanjiasu.com^
+||sdktt.data.tianwenca.com^
+||sdktt.data.comfylink.com^
+||seeds-open.comfylink.com^
+||tt-appinsight-web-openapi.ttyuyin.com^
+
+! --- 腾讯广告与追踪 ---
+||rdelivery.qq.com^
+||trace.inlong.qq.com^
+
+! --- OPPO 系统追踪 ---
+||uc-track-gl.heytapmobi.com^
+||obus-cn.dc.heytapmobi.com^
+||obus-dc20123-cn.heytapmobi.com^
+||dc-dragate-cn.heytapmobi.com^
+||push-ads-cn.heytapmobi.com^
+||obus-dctech-cn.heytapmobi.com^
+||obus-conf-cn.heytapmobi.com^
+||mdp-usertrace-cn.heytapdownload.com^
+
+! --- vivo 系统 ---
+||ssp.vivo.com.cn^
+||appstoreonrt-stsdk.vivo.com.cn^
+||api-stsdk.vivo.com.cn^
+
+! --- 阿里妈妈 Tanx（舒肤佳广告走这条）---
+||tanx.com^
+||wagbridge.alsc-prd.tanx.com.gds.alibabadns.com^
+
+! --- 其他 App：美柚、叠纸、SkyEngine、WiFi 万能钥匙 SDK 等 ---
+||mmonitor.meiyou.com^
+||ads-monitoring.papegames.com^
+||ingest-all-bj.skyengine.com.cn^
+||ingest-all-bj-gw.skyengine.com.cn^
+||ingest-sdk-stat-bj.skyengine.com.cn^
+||abtest-client.skyengine.com.cn^
+||vhs.wwstat.com^
+||log-sdk.clickwifi.net^
+
+! --- 系统遥测：Windows、NVIDIA ---
+||settings-win.data.microsoft.com^
+||events.telemetry.data.nvidia.cn^

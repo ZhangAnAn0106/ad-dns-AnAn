@@ -1,0 +1,320 @@
+! Title: 自用广告域名黑名单
+! Description: App 广告/追踪域名拦截规则（AdGuard / AdGuard Home 语法）
+! 说明: 每条规则上方都标注了来源 App 与 SDK。未启用的规则以 ! 开头注释保留，需要时删掉开头的 ! 即可。
+! 维护: 新增 App 请照抄现有分节格式，见 README。
+!
+! ==========================================================================
+! [酷安 CoolApk 16.6.4] 穿山甲 / Pangle / GroMore / 巨量引擎（字节跳动，主广告源）
+! 广告平台: 穿山甲 / Pangle / GroMore / 巨量引擎
+! ==========================================================================
+||pangolin-sdk-toutiao.com^
+||pangolin-sdk-toutiao1.com^
+||pangolin-sdk-toutiao-b.com^
+||pglstatp-toutiao.com^
+||csjplatform.com^
+||pangle.cn^
+||ad.toutiao.com^
+||phoniex.toutiao.com^
+||toutiaopage.com^
+! ||ctobsnssdk.com^   已注释：字节通用 SDK 域名（非纯广告），实测拦了会坏功能，
+!                      已在 whitelist.txt 整合分节放行。例外优先级更高，留着这条等于失效，故注释掉。
+||applog.snssdk.com^
+||rtapplog.snssdk.com^
+||rtlog.snssdk.com^
+||log.snssdk.com^
+||mon.zijieapi.com^
+||tnc3-aliec2.zijieapi.com^
+||apmplus.volces.com^
+||apps.bytesfield.com^
+||apps.bytesfield-b.com^
+||sf1-amtos-cdn.bytesmanager.com^
+||apps.oceanengine.com^
+||applog.bytedance.net^
+||cdn-tos-cn.bytedance.net^
+||scc.bytedance.com^
+||databyterangers.com.cn^
+
+! ==========================================================================
+! [酷安 CoolApk 16.6.4] 优量汇 / GDT / 腾讯广告
+! ==========================================================================
+||gdt.qq.com^
+||ugdtimg.com^
+||gdtimg.com^
+||e.qq.com^
+||union.eff.qq.com^
+||tdid.m.qq.com^
+||trace.qq.com^
+
+! ==========================================================================
+! [酷安 CoolApk 16.6.4] 快手广告 Ksad
+! ==========================================================================
+||adkwai.com^
+||e.kuaishou.com^
+||e.kuaishou.cn^
+||gifshow.com^
+||ksapisrv.com^
+||kskwai.com^
+||gskwai.com^
+||kwaizt.com^
+||kuaishouzt.com^
+
+! ==========================================================================
+! [酷安 CoolApk 16.6.4] 广告聚合平台 TopOn / AnyThink
+! ==========================================================================
+||anythinktech.com^
+
+! ==========================================================================
+! [酷安 CoolApk 16.6.4] 广告策略下发 / 点击追踪 / 反作弊上报
+! ==========================================================================
+||statisticslinks.com^
+||puata.info^
+||birdgesdk.com^
+
+! ==========================================================================
+! 可选档：拦了更干净，但有副作用，需要时去掉行首的 !
+! ==========================================================================
+! [酷安] 抖音唤起与落地页 —— 拦了 App 内跳转抖音会失效
+!||open.douyin.com^
+!||v.douyin.com^
+! [酷安] 快手图片 CDN —— 拦了酷安里的快手内容图片会挂
+!||yximgs.com^
+! [酷安] 友盟统计 —— 是统计不是广告，友盟本身也做广告联盟，看个人取舍
+!||umeng.com^
+!||umengcloud.com^
+! [酷安] 小米广告 SDK（设备级，非本 App 自营）
+!||api.ad.xiaomi.com^
+!||sdkconfig.ad.xiaomi.com^
+! [酷安] 京东联盟 / 电商导流
+!||union-click.jd.com^
+!||knicks.jd.com^
+
+! ==========================================================================
+! [今日水印相机 com.xhey.xcamera 3.0.465.8] 广告
+! 广告接口: ad.xhey.top / ad-acc.xhey.top
+!       + 穿山甲/快手/TopOn/百度/1RTB 各 SDK
+! 亮点: 自家广告接口 ad.xhey.top 与业务域名 net-cloud.xhey.top / longmen.xhey.top
+!       完全分离 —— 可以直接拦掉，不影响拍照、水印、上传。
+! ==========================================================================
+||ad.xhey.top^
+||ad-acc.xhey.top^
+
+! --- 百度广告联盟 ---
+||cpro.baidustatic.com^
+||union.baidu.com^
+
+! --- 1RTB 广告交易平台（DSP/SSP）---
+||1rtb.net^
+||1rtb.com^
+
+! --- 巨量引擎广告统计 ---
+||analytics.oceanengine.com^
+||lf-event-manager.oceanengine.com^
+
+! --- 其他广告 ---
+||universe.ad.live^
+
+! ==========================================================================
+! [今日水印相机] 可选档：崩溃上报 / 行为统计 / 推送 —— 不影响功能，属追踪
+! ==========================================================================
+!||volceapplog.com^
+!||sensorsdata.cn^
+!||sareport.xhey.top^
+!||android.bugly.qq.com^
+!||pro.bugly.qq.com^
+!||cloud.bugly.qq.com^
+!||rmonitor.qq.com^
+!||mta.qq.com^
+!||mdt.qq.com^
+!||h-adashx.ut.taobao.com^
+!||adash-emas.cn-hangzhou.aliyuncs.com^
+!||px.ucweb.com^
+!||thefatherofsalmon.com^
+!||htrace.wetvinfo.com^
+!||openinstall.io^
+
+! ==========================================================================
+! [红果免费短剧 com.phoenix.read 7.2.5.32] 广告请求 API —— 与内容域名分离，可安全拦截
+!       strategy_info: {"ad.zijieapi.com": "ads5-normal.zijieapi.com"}
+! 注意: 不要图省事拦整个 zijieapi.com —— mon/verify/gecko/relation/minigame
+!       等业务域名同域，拦了 App 会出问题。
+! ==========================================================================
+||ad.zijieapi.com^
+||ads.zijieapi.com^
+||ads3-normal.zijieapi.com^
+||ads5-normal.zijieapi.com^
+||ads3-normal-lf.zijieapi.com^
+||ads3-normal-hl.zijieapi.com^
+||ads3-normal-lq.zijieapi.com^
+||ads5-normal-lf.zijieapi.com^
+||ads5-normal-hl.zijieapi.com^
+||ads5-normal-lq.zijieapi.com^
+
+! ==========================================================================
+! [红果免费短剧] 可选档：字节统计上报与推广下载 —— 不影响内容，但属追踪
+! ==========================================================================
+!||mon.snssdk.com^
+!||mon.zijieapi.com^
+!||log.zijieapi.com^
+!||applog.zijieapi.com^
+!||applog.snssdk.com^
+!||monsetting.toutiao.com^
+!||log3-applog.fqnovel.com^
+!||log5-applog.fqnovel.com^
+!||rtlog3-applog.fqnovel.com^
+!||rtlog5-applog.fqnovel.com^
+!||abtest-ch.snssdk.com^
+!||mcs.snssdk.com^
+!||mssdk.zijieapi.com^
+!||dm.toutiao.com^
+!||dm.bytedance.com^
+!||dm.pstatp.com^
+!||nativeapp.toutiao.com^
+!||dig.bdurl.net^
+!||dig.zjurl.cn^
+!||h.online-metrix.net^
+
+! ==========================================================================
+! [微信 WeChat 8.0.79] 微信广告
+!
+! 重要: 微信广告的请求、下发、点击落地页全部走 mp.weixin.qq.com
+!       (/cgi-bin/mmbiz-bin/recommend/timelinecard、?weixinadinfo=...),
+!       素材走 mmbiz.qpic.cn / wxsnsdythumb.wxs.qq.com —— 与正文、朋友圈内容同域，
+!       所以下面这些域名只能拦掉"上报"，拦不掉广告位本身。
+!       微信内嵌的广点通落地页/素材已被上面酷安分节的 gdt.qq.com / ugdtimg.com
+!       / e.qq.com / trace.qq.com 覆盖。
+! ==========================================================================
+||ad.wx.com^
+||pingjs.qq.com^
+||btrace.qq.com^
+
+! ==========================================================================
+! 通用第三方广告与统计（在微信 APK 中发现，与具体 App 无关）
+! ==========================================================================
+||googlesyndication.com^
+||doubleclick.net^
+||googleadservices.com^
+||google-analytics.com^
+||app-measurement.com^
+||masdk.3g.qq.com^
+||appchannel.html5.qq.com^
+||pmir.3g.qq.com^
+||aegis.qq.com^
+
+! ==========================================================================
+! [饿了么 / 淘宝闪购] 广告与行为埋点 —— 拦了不影响领券和页面加载
+! ⚠️ 对应白名单里必须精确放行 ele.me 的子域，不要写 @@||ele.me^ ——
+!    例外规则优先级高于拦截规则，放行父域会把下面这些一起作废（实测已验证）
+! ==========================================================================
+||adashx.ut.ele.me^
+||v6-adashx.ut.ele.me^
+||mobile-pubt.ele.me^
+||web-ubt.ele.me^
+||h-adashx.ut.taobao.com^
+||fourier.alibaba.com^
+||fourier.taobao.com^
+
+! ==========================================================================
+! 明确不建议拦截（列在这里是为了提醒：通用规则集常拦这些，会坏功能）
+! 风控 / 验证码 / 一键登录 / 推送 / 支付 / 第三方登录
+! ==========================================================================
+! ||shuzilm.cn^            数美设备指纹 → 触发风控、验证码异常
+! ||id6.me^                数美/移动设备标识 → 同上
+! ||dun.163.com^           网易易盾验证码 → 登录验证失败
+! ||cstaticdun.126.net^    网易易盾静态资源
+! ||tpns.tencent.com^      腾讯移动推送 → 推送收不到
+! ||mpush-api.aliyun.com^  阿里移动推送 → 同上
+! ||cmpassport.com^        中国移动一键登录 → 登录失败
+! ||e.189.cn^              电信一键登录 → 登录失败
+! ||log.wechatpay.cn^      微信支付日志 → 支付异常风险
+! ||i.gtimg.cn^            QQ 登录/分享资源 → 第三方登录挂
+! ||qzonestyle.gtimg.cn^   QQ 空间样式资源 → 同上
+! ||api.coolapk.com^       酷安自身 API —— 自营广告也走这里，拦了整个 App 就废了
+!
+! --- 微信（通用规则集常误拦，注意核对）---
+! ||ad.weixin.qq.com^            微信「个性化广告」关闭入口，拦了就关不掉广告
+! ||ads.privacy.qq.com^          微信广告偏好设置页（wxoptout），同上
+! ||dns.weixin.qq.com^           微信私有 DNS 解析服务，拦了网络异常
+! ||dns.weixin.qq.com.cn^        同上
+! ||aedns.weixin.qq.com^         微信加速 DNS，anti-AD 会拦，属误伤
+! ||as.weixin.qq.com^            微信域名映射表里的正常业务域
+! ||apd-pcdnwxstat.teg.tencent-cloud.net^    微信 PCDN 传输（anti-AD 会拦，误伤）
+! ||apd-pcdnwxlogin.teg.tencent-cloud.net^   微信登录长连接，拦了掉线
+! ||apd-pcdnwxnat.teg.tencent-cloud.net^     微信 NAT 穿透，拦了连不上
+! ||wxs.qq.com^                  朋友圈缩略图 / 小程序静态资源 CDN
+! ||mmbiz.qpic.cn^               公众号正文与广告图片共用，拦了正文图也没了
+! ||mp.weixin.qq.com^            公众号文章本体
+!
+! --- 今日水印相机（不要拦，拦了功能就没了）---
+! ||xhey.top^                    整域 —— 会把 ad.xhey.top 广告接口一起放掉
+! ||net-cloud.xhey.top^          业务 API（上传/同步/团队）
+! ||net-cloud-tx.xhey.top^       业务 API
+! ||longmen.xhey.top^            业务 API（版本、活动、渠道）
+! ||h5.xhey.top^                 业务 H5（水印模板、活动页、广告投诉页）
+! ||static.xhey.top^             静态资源
+! ||xcamerares.xhey.top^         官方资源 CDN（阿里云 OSS）
+! ||member-ship.xhey.top^        会员
+! ||api.map.baidu.com^           百度地图定位 —— 水印要写经纬度
+! ||loc.map.baidu.com^           百度定位
+! ||ofloc.map.baidu.com^         百度定位
+! ||client.map.baidu.com^        百度地图
+! ||daup.map.baidu.com^          百度地图
+! ||openspeech.bytedance.com^    语音识别（水印语音输入）
+! ||getui.com^                   个推推送
+! ||gepush.com^                  个推推送
+! ||igexin.com^                  个推推送
+! ||getui.net^                   个推推送
+! ||api.snssdk.com^             红果正文内容接口 /api/novel/book/reader/content/v1 —— 别拦
+! ||i.snssdk.com^               红果金币任务/签到/桌面组件接口 /luckycat/novel/v1/* —— 别拦
+! ||ib.snssdk.com^              同上（备用）
+! ||is.snssdk.com^              设置接口 /service/settings/v3/ —— 别拦
+! ||zijieapi.com^                整域 —— mon/verify/gecko/relation/minigame 等业务域名同域
+! ||api.fqnovel.com^             内容 API
+! ||api5-normal.fqnovel.com^     内容 API（含 -lf/-hl/-lq 区域变体）
+! ||reading.snssdk.com^          内容 API
+! ||i.snssdk.com^                内容 API
+! ||is.snssdk.com^               内容 API
+! ||gecko.zijieapi.com^          字节资源热更新(Gecko)，拦了 UI 资源可能加载失败
+! ||gecko.snssdk.com^            同上
+! ||fqnovelpic.com^              封面图 CDN
+! ||lf3-reading.fqnovelpic.com^  封面图 CDN
+! ||p1-reading.byteimg.com^      封面图 CDN
+! ||p3-novel.byteimg.com^        封面图 CDN
+! ||bytegecko.com^               视频/资源 CDN
+! ||lf3-reading.fqnovelstatic.com^  静态资源
+
+! ==========================================================================
+! [番茄小说 com.dragon.read] 广告规则
+! ==========================================================================
+! --- 启用：广告素材 / 广告活动 / 广告平台 ---
+||activity-ag.awemeughun.com^
+||sf3-ttcdn-tos.pstatp.com^
+||gurd.snssdk.com^
+||api.iegadp.qq.com^
+||byteorge.com^
+||bytegoofy.com^
+||v6-novelapp.ixigua.com^
+||novelapp.ixigua.com^
+||default.ixigua.com^
+!
+! --- 启用（配置下发 / 风控类，如遇功能异常优先注释掉这三条）---
+||tnc3-alisc1.snssdk.com^
+||tnc3-aliec2.snssdk.com^
+||security-lq.snssdk.com^
+!
+! --- 未启用：已有证据表明拦了会坏功能或与白名单打架 ---
+! ||p6-ad-sign.byteimg.com^          广告签名（dig 得 162.128.226.8）；但 whitelist.txt 有
+!                                    @@||byteimg.com^（封面图 CDN），AGH 里 @@ 优先级更高
+!                                    → 这条必然失效。要真拦需写成 $important。
+! ||p9-ad-sign.byteimg.com^          同上
+! ||i.snssdk.com^                    番茄/红果金币任务、签到、桌面组件 —— 见下方「明确不建议拦截」节
+! ||i-lq.snssdk.com^                 同上（-lq 区域变体，dig 得 155.102.180.251）
+! ||is.snssdk.com^                   设置接口 /service/settings/v3/ —— 同上
+! ||mcs.snssdk.com^                  配置下发，红果节已有注释
+! ||dig.bdurl.net^                   短链解析，红果节已有注释
+! ||msync-im1-vip6-std.easemob.com^  环信 IM 长连接（dig 得 39.97.194.36）—— 客服/私信会掉线
+! ||apd-pcdnwxlogin.teg.tencent-cloud.net^  微信登录长连接（dig 得 0.0.0.1，已被腾讯自己黑洞）
+!                                    见下方「明确不建议拦截」节，拦了微信掉线
+! ||bytedance.com^                   整域太激进，会连带 openspeech 等必要域（白名单里只救了那一个）
+! ||pstatp.com^                      字节图片/视频 CDN 整域，拦了图全没；只保留 sf3-ttcdn-tos 精确条目
+!
+! 注: 按 IP 段和按路径拦截 DNS 层做不了，需在其他层实现，涉及域名上面已按域覆盖

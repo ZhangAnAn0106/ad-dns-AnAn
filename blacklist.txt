@@ -441,3 +441,81 @@
 ||scsjsd.com^
 ||luckydog.snssdk.com^
 ||iccvlog.com^
+
+! ==========================================================================
+! [abclq/home-dns-adblock 精确 75 条合并 2026-11-26] 新增 45 条
+! 来源: abclq/home-dns-adblock dist/adguard-dns.txt（精确规则，真实设备 DNS 日志），
+!       与自建黑名单去重后新增；上游 949 条不合并，那部分已有 8 条大名单覆盖。
+! 已排除 5 条，见本节末尾注释：dns.alidns.com / doh.pub（公共 DoH，拦了会坏解析）、
+! webcast5-open-hl.douyin.com 两条（抖音直播，拦了坏直播）、
+! apd-pcdnwxlogin.teg.tencent-cloud.net（微信登录，白名单里有父域）。
+! 番茄日志 10 条带 $important：白名单 @@||fqnovel.com^ 会压住它们，不加 $important 等于失效。
+! ==========================================================================
+
+! --- 红果/番茄阅读广告 v5/v9/v11/v13/v96（qznovelvod.com，v6/v26 已有） ---
+||v5-reading-ad.qznovelvod.com^
+||v9-reading-ad.qznovelvod.com^
+||v11-reading-ad.qznovelvod.com^
+||v13-reading-ad.qznovelvod.com^
+||v96-reading-ad.qznovelvod.com^
+||v5-bd-daily-reading-ad.qznovelvod.com^
+||v5-se-sjy-daily-reading-ad.qznovelvod.com^
+
+! --- 字节小游戏广告（minigame3/5，hl/lq；lf 已有） ---
+||minigame3-normal-hl.zijieapi.com^
+||minigame3-normal-lq.zijieapi.com^
+||minigame5-normal-hl.zijieapi.com^
+||minigame5-normal-lq.zijieapi.com^
+
+! --- 字节追踪 tnc ---
+||tnc0-aliec2.zijieapi.com^
+||tnc0-alisc1.zijieapi.com^
+||tnc3-alisc1.zijieapi.com^
+
+! --- 番茄/红果日志埋点（$important，压住 @@||fqnovel.com^ 白名单） ---
+||log3-applog-lf.fqnovel.com^$important
+||log5-applog-hl.fqnovel.com^$important
+||log5-applog-lf.fqnovel.com^$important
+||mon11-misc-hl.fqnovel.com^$important
+||mon11-misc-lf.fqnovel.com^$important
+||mon3-misc-lf.fqnovel.com^$important
+||rtlog3-applog-hl.fqnovel.com^$important
+||rtlog3-applog-lf.fqnovel.com^$important
+||rtlog5-applog-hl.fqnovel.com^$important
+||rtlog5-applog-lf.fqnovel.com^$important
+
+! --- 小红书 ---
+||apm-native.xiaohongshu.com^
+||lng.xiaohongshu.com^
+||spider-tracker.xiaohongshu.com^
+
+! --- 友盟埋点 ---
+||cnlogs.umeng.com^
+||errnewlog.umeng.com^
+||ossnt-errlog.umeng.com^
+||ulogs.umeng.com^
+
+! --- 腾讯广告日志 ---
+||aeventlog.beacon.qq.com^
+
+! --- 其他：小红书广告 CDN / 字节 / 小米小爱追踪等 ---
+||ads-vp5.xhscdn.com^
+||comfylink.com^
+||jomoxc.com^
+||l2-toutiao-quic-ipv6-ml.gslb.ksyuncdn.com^
+||ndcpp.com^
+||pangle.io^
+||praisewindow.ugsdk.cn^
+||qrstuvwxyzab.com^
+||tracker.xiaomixiaoai.com^
+||wmzfylgdsz.com^
+||wuchuyun.com^
+||xinqiucc.com^
+||ydycdn.com^
+
+! --- 本次排除，未加： ---
+! ||dns.alidns.com^   公共 DoH，拦了会坏解析
+! ||doh.pub^   公共 DoH，拦了会坏解析
+! ||webcast5-open-hl.douyin.com^   抖音直播，拦了坏直播
+! ||webcast5-open-hl.douyin.com.c.dsa.cdnbuild.net^   同上
+! ||apd-pcdnwxlogin.teg.tencent-cloud.net^   微信登录，白名单有父域

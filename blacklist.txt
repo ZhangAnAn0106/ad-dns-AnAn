@@ -411,3 +411,20 @@
 ! --- 系统遥测：Windows、NVIDIA ---
 ||settings-win.data.microsoft.com^
 ||events.telemetry.data.nvidia.cn^
+
+! ==========================================================================
+! [红果 7.4.5.32 代码里翻到的广告域 2026-11-25] 6 条
+! 来源: 红果 APK 代码分析（26 个 dex），与已有黑名单去重后新增。
+! 注意: OceanEngine 这 5 条是字节广告投放平台域名，代码里是平台 URL，
+!       不是实测流量里出现过的广告请求，拦了短期内可能看不到效果。
+! ==========================================================================
+
+! --- 字节广告统计 ---
+||lf3-analytics.bytescm.com^
+
+! --- 巨量引擎（字节广告投放平台）---
+||ad.oceanengine.com^
+||brand.oceanengine.com^
+||clue.oceanengine.com^
+||leads.oceanengine.com^
+||oceanengine.com^

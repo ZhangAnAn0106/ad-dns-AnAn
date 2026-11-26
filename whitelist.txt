@@ -504,3 +504,48 @@
 @@||ywb9.top^
 @@||zhan.vivo.com.cn^
 @@||zhanzhang.toutiao.com^
+
+! ==========================================================================
+! [Kuner DNS-Kuner 放行单对比合并 2026-11-27] 来源 https://raw.githubusercontent.com/Kuner-mw/DNS-Kuner/main/FilterRules/allowlist.txt（49 条）
+! 只合了其中 40 条正经 @@|| 规则；跳过 3 条正则（@@/.*weixin.*/ 等，太宽）和 1 条写错的（@@auni.telecome.cn^ 少了 |）；与黑名单无冲突。
+! ==========================================================================
+@@||*luna.douyin*.*
+@@||*m*.360buyimg.com^
+@@||aks.jdpay.com^
+@@||api*normal*fqnovel.com^
+@@||api-ks.wtzw.com^
+@@||appimg*dbankcdn.com^
+@@||baidu.com^
+@@||baidupcs.com^
+@@||camscanner.com^
+@@||captcha.95516.com^
+@@||cdn.exp.xiaomi.com^
+@@||developer.huawei.com^
+@@||device.95516.com^
+@@||f17.market.xiaomi.com^
+@@||gov.cn^
+@@||guid.tpns.tencent.com^
+@@||imgsrc.baidu.com^
+@@||jd.com^
+@@||lf-normal-gr-sourcecdn.bytegecko.com^
+@@||m.baidu.com^
+@@||m.jdjygold.com^
+@@||open.95516.com^
+@@||p*reading*sign.fqnovelpic.com^
+@@||pan.baidu.com^
+@@||ppui-static-wap.cdn.bcebos.com^
+@@||qishui.com^
+@@||sdk*faceid.qq.com^
+@@||smartplg.com^
+@@||storage*360buyimg.com^
+@@||tb.himg.baidu.com^
+@@||tieba.baidu.com^
+@@||ts.market.mi-img.com^
+@@||tts.baidu.com^
+@@||v*-fq-tts.fqnovelvod.com^
+@@||wappass.baidu.com^
+@@||wq.360buyimg.com^
+@@||www.shidianguji.com^
+@@||wxqcloud.qq.com.cn^
+@@||ykf.ichongqing.info^
+@@||zhuti.xiaomi.com^

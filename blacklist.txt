@@ -148,6 +148,11 @@
 ||ads5-normal-lf.zijieapi.com^
 ||ads5-normal-hl.zijieapi.com^
 ||ads5-normal-lq.zijieapi.com^
+! --- 穿山甲/GroMore SDK（2026-11-26 自海哥 HG 规则 hg1.txt 合并，仅取广告接口，内容域已排除；pangolin-sdk-toutiao.com 及其子域此前已在列，故不重复加）---
+||pangolin16.sgsnssdk.com^
+||ug.pangolin-dsp-toutiao.com^
+||lf6-ad-union-sdk.pglstatp-toutiao.com^
+||consult.oceanengine.com^
 
 ! ==========================================================================
 ! [红果免费短剧] 可选档：字节统计上报与推广下载 —— 不影响内容，但属追踪

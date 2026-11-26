@@ -23,6 +23,7 @@
 ||rtlog.snssdk.com^
 ||log.snssdk.com^
 ||mon.zijieapi.com^
+||thanos.zijieapi.com^
 ||tnc3-aliec2.zijieapi.com^
 ||apmplus.volces.com^
 ||apps.bytesfield.com^

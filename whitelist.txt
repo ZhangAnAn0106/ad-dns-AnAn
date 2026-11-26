@@ -177,3 +177,6 @@
 @@||obs.3688baihuo.com^$important
 ! --- 字节 CT 上报（属功能依赖，不是广告）---
 @@||ctobsnssdk.com^
+
+! --- 海哥 HG 规则自带放行（2026-11-27）---
+@@||sug.so.360.cn^

@@ -13720,3 +13720,54 @@
 ||zzztl.com^
 ||zzzu.ag8.com^
 ||zzzx1-862777969.ap-east-1.elb.amazonaws.com^
+
+! ==========================================================================
+! [Kuner DNS-Kuner 黑名单对比合并 2026-11-27] 来源 https://raw.githubusercontent.com/Kuner-mw/DNS-Kuner/main/FilterRules/blacklist.txt（109 条）
+! 只合了其中 46 条安全的具体 || 规则；排除 8 条与白名单冲突的（tpns.tencent.com、hicloud.com、fqnovel.com/byteimg.com/wxs.qq.com 子域）；31 条 *通配符* 规则未合（太宽泛，待她定）。
+! ==========================================================================
+||*ad*qm*
+||*ad*qumao*
+||*ad*vivo*
+||*ad*wtzw*
+||*aio.ecombdimg.com^
+||*drcn*dbankcdn*
+||*gslb.qianxun.com^
+||*item.ecombdimg.com^
+||*ks.qm*.com^
+||*mob.com^
+||*pull.yximgs.com^
+||*reading*fqnovel*.com^
+||*shifen.com^
+||*tanx.com^
+||*video.fqnovelvod.com^
+||*vod*wtzw.com^
+||*yundunwaf*.com^
+||amdcopen.m.taobao.com^
+||api*dutils.com^
+||api*qm*com^
+||api-cmnt.wtzw.com^
+||api-gw.wtzw.com^
+||api-sc.wtzw.com^
+||auni.unioncom.cc^
+||bugly.qq.com^
+||dbankcloud.cn^
+||dun.163*
+||fengkongcloud.com^
+||lanpye.cn^
+||mkt.wtzw.com^
+||mobads*baidu.com
+||p*.douyinpic.com^
+||pull.etoote.com^
+||quic.xsj.qq.com^
+||qzs.gdtimg.com^
+||resource.ad-scope.com.cn^
+||risk-fp-openapi.vivo.com.cn^
+||s.peplle.cn^
+||smtcdns.com^
+||t-cfg.wtzw.com^
+||uu.163*
+||vc-brain*ndcpp.com^
+||vc-mirror*ndcpp.com^
+||viayoo.com^
+||webcast5-open-lf.douyin.com^
+||wscdns.com^

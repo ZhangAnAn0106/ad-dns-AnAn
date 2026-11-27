@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>小米8 监控面板</title>
+<style>  * { box-sizing: border-box; }
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card2: #273449;
+    --border: #334155;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --green: #34d399;
+    --green-bg: rgba(52, 211, 153, .15);
+    --blue: #60a5fa;
+    --blue-bg: rgba(96, 165, 250, .15);
+    --purple: #c084fc;
+    --purple-bg: rgba(192, 132, 252, .15);
+    --red: #f87171;
+    --red-bg: rgba(248, 113, 113, .15);
+  }
+  body { margin: 0; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.5; overflow-x: hidden; }
+  header { background: #0b1220; color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--border); }
+  header h1 { margin: 0; font-size: 18px; }
+  header p { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+  .head-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .head-btns { display: flex; gap: 8px; align-items: center; }
+  button { border: 1px solid var(--border); background: var(--card2); color: var(--text); border-radius: 8px; padding: 7px 12px; font-size: 14px; cursor: pointer; }
+  button.primary { background: #0284c7; border-color: #0284c7; color: #fff; }
+  button:disabled { opacity: .5; cursor: default; }
+  .toggle { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+  .toggle input { accent-color: var(--accent); }
+  main { padding: 12px; max-width: 960px; margin: 0 auto; }
+  section { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, .35); }
+  section h2 { margin: 0 0 10px; font-size: 16px; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .status { display: inline-block; padding: 2px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+  .status.on { background: var(--green-bg); color: var(--green); }
+  .status.off { background: var(--red-bg); color: var(--red); }
+  .nodes { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+  .node { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; font-size: 13px; background: var(--card2); }
+  .node b { display: block; font-size: 14px; }
+  .node div { color: var(--muted); }
+  .counts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0; }
+  .count { text-align: center; border: 1px solid var(--border); border-radius: 10px; padding: 10px 4px; background: var(--card2); min-width: 0; }
+  .count b { display: block; font-size: 24px; font-weight: 700; overflow-wrap: break-word; }
+  .count span { font-size: 12px; color: var(--muted); }
+  .table-wrap { max-height: 420px; overflow: auto; border-radius: 8px; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  thead th { position: sticky; top: 0; background: var(--card); color: var(--muted); font-weight: 600; z-index: 1; }
+  td.domain, td.ip { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12px; }
+  td.domain { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .route { display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .route.direct { background: var(--green-bg); color: var(--green); }
+  .route.aws { background: var(--blue-bg); color: var(--blue); }
+  .route.tokyo { background: var(--purple-bg); color: var(--purple); }
+  .route.blocked { background: var(--red-bg); color: var(--red); }
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
+  .stat { text-align: center; border: 1px solid var(--border); border-radius: 10px; padding: 12px 4px; background: var(--card2); min-width: 0; }
+  .stat b { display: block; font-size: 24px; font-weight: 700; overflow-wrap: break-word; }
+  .stat span { font-size: 12px; color: var(--muted); }
+  .top-list { margin: 6px 0 0; padding-left: 18px; font-size: 13px; }
+  .top-list li { margin: 3px 0; word-break: break-all; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  input[type="password"], input[type="text"] { flex: 1; min-width: 160px; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 14px; background: var(--card2); color: var(--text); }
+  input::placeholder { color: var(--muted); }
+  .err { color: var(--red); background: var(--red-bg); border-radius: 8px; padding: 8px 10px; font-size: 13px; margin: 8px 0; }
+  .ok { color: var(--green); }
+  a { color: var(--accent); }
+  .blocked-tag { color: var(--red); font-weight: 600; }
+  .allowed-tag { color: var(--green); }
+  .traffic-big { text-align: center; border: 1px solid var(--border); border-radius: 10px; padding: 12px 4px; background: var(--card2); margin: 10px 0; }
+  .traffic-big b { display: block; font-size: 28px; font-weight: 700; color: var(--accent); }
+  .traffic-big span { font-size: 12px; color: var(--muted); }
+  .bar-wrap { height: 8px; border-radius: 999px; background: #0b1220; overflow: hidden; margin: 8px 0; }
+  .bar-fill { height: 100%; border-radius: 999px; background: var(--accent); width: 0%; transition: width .3s; }
+  /* Tablet (601-1024px): two-column stat grids, rate card spans full width */
+  @media (min-width: 601px) and (max-width: 1024px) {
+    .counts { grid-template-columns: repeat(2, 1fr); }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-grid .stat:last-child { grid-column: span 2; }
+  }
+  /* Phone (<=600px): tighter spacing, stacked node cards, full-width forms */
+  @media (max-width: 600px) {
+    body { font-size: 14px; }
+    header { padding: 12px; }
+    header h1 { font-size: 16px; }
+    .head-btns { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
+    main { padding: 8px; }
+    section { padding: 12px; border-radius: 12px; }
+    section h2 { font-size: 15px; }
+    .counts { grid-template-columns: repeat(2, 1fr); }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-grid .stat:last-child { grid-column: span 2; }
+    .count b, .stat b { font-size: 20px; }
+    .node { flex: 1 1 100%; }
+    .row input[type="text"], .row input[type="password"] { flex: 1 1 100%; }
+    .row button { flex: 1 1 100%; }
+    table { font-size: 12px; min-width: 520px; }
+    .traffic-big b { font-size: 24px; }
+  }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 8px 0 20px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="head-row">
+    <div>
+      <h1>小米8 监控面板</h1>
+      <p id="updated">未刷新</p>
+    </div>
+    <div class="head-btns">
+      <span id="versionLabel" class="muted">v…</span>
+      <button id="updateBtn">在线更新</button>
+      <span id="updateMsg" class="muted"></span>
+      <label class="toggle"><input type="checkbox" id="autoToggle" checked> 自动刷新 30 秒</label>
+      <button id="refreshBtn">刷新</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="proxySection">
+    <h2>代理（网关 Xray）</h2>
+    <div>状态：<span id="xrayStatus" class="status off">未知</span> <span id="proxyErr" class="muted"></span> <span id="lastActivity" class="muted"></span></div>
+    <div class="nodes" id="nodeList"></div>
+    <h3 style="font-size:14px;margin:12px 0 6px">剩余流量</h3>
+    <div class="row">
+      <input type="password" id="trafficSub" autocomplete="off" placeholder="粘贴订阅链接">
+      <button class="primary" id="trafficBtn">查询</button>
+    </div>
+    <p class="muted">订阅链接只保存在本页浏览器的会话里，不会发到别处；只有点“查询”时才会去拉取一次，自动刷新不会拉取。</p>
+    <div id="trafficErr"></div>
+    <div id="trafficResult" style="display:none">
+      <div class="traffic-big"><b id="trafficRemain">-</b><span>剩余流量</span></div>
+      <div class="bar-wrap"><div class="bar-fill" id="trafficBar"></div></div>
+      <div class="muted" id="trafficDetail"></div>
+    </div>
+    <div class="counts" id="countList"></div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>时间</th><th>来源 IP</th><th>域名</th><th>走线</th></tr></thead>
+      <tbody id="connBody"><tr><td colspan="4" class="muted">加载中…</td></tr></tbody>
+    </table>
+    </div>
+  </section>
+
+  <section id="aghSection">
+    <h2>AdGuard Home（广告拦截）</h2>
+    <div id="aghLogin">
+      <p class="muted">输入 AGH 管理密码后查看统计。密码只保存在本页浏览器的会话里，不会发到别处。</p>
+      <div class="row">
+        <input type="text" id="aghUser" value="admin" autocomplete="username" placeholder="用户名">
+        <input type="password" id="aghPass" autocomplete="current-password" placeholder="AGH 管理密码">
+        <button class="primary" id="aghConnectBtn">连接</button>
+      </div>
+      <p class="muted">也可以直接打开 <a href="http://192.168.5.200:18080" target="_blank" rel="noopener">AGH 管理页面</a>。</p>
+      <div id="aghLoginErr"></div>
+    </div>
+    <div id="aghData" style="display:none">
+      <div class="row">
+        <span class="ok" id="aghOk">已连接</span>
+        <button id="aghDisconnectBtn">断开</button>
+        <a href="http://192.168.5.200:18080" target="_blank" rel="noopener">打开 AGH 管理页面</a>
+      </div>
+      <div class="stat-grid" id="aghStats"></div>
+      <h3 style="font-size:14px;margin:12px 0 6px">拦截最多的域名</h3>
+      <ol class="top-list" id="topBlocked"></ol>
+      <h3 style="font-size:14px;margin:12px 0 6px">查询最多的域名</h3>
+      <ol class="top-list" id="topQueried"></ol>
+      <h3 style="font-size:14px;margin:12px 0 6px">最近查询</h3>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>时间</th><th>客户端</th><th>域名</th><th>结果</th></tr></thead>
+        <tbody id="queryBody"></tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>小米8 · 192.168.5.200 · 仅限局域网访问</footer>
+</main>
+
+<script>
+(function () {
+  var autoTimer = null;
+  var aghCreds = null;
+
+  function fmtTime(s) {
+    return s || "";
+  }
+
+  function routeClass(route) {
+    if (route === "直连") return "route direct";
+    if (route === "拦截") return "route blocked";
+    if (route === "日本-东京02") return "route tokyo";
+    return "route aws";
+  }
+
+  function loadProxy() {
+    return fetch("/api/proxy").then(function (r) { return r.json(); }).then(function (d) {
+      var st = document.getElementById("xrayStatus");
+      if (d.xray_running) {
+        st.textContent = "运行中";
+        st.className = "status on";
+      } else {
+        st.textContent = "未运行";
+        st.className = "status off";
+      }
+      document.getElementById("proxyErr").textContent = d.log_lines ? ("日志共 " + d.log_lines + " 行") : "";
+      document.getElementById("lastActivity").textContent = d.last_activity ? ("最近活动：" + d.last_activity) : "";
+
+      var nl = document.getElementById("nodeList");
+      nl.innerHTML = "";
+      (d.nodes || []).forEach(function (n) {
+        var div = document.createElement("div");
+        div.className = "node";
+        var b = document.createElement("b"); b.textContent = n.tag;
+        var s1 = document.createElement("div"); s1.textContent = n.proto || "";
+        var s2 = document.createElement("div"); s2.textContent = n.host || "";
+        div.appendChild(b); div.appendChild(s1); div.appendChild(s2);
+        nl.appendChild(div);
+      });
+
+      var cl = document.getElementById("countList");
+      cl.innerHTML = "";
+      var c = d.counts || {};
+      [["直连", "直连"], ["日本-AWS01", "日本 AWS01"], ["日本-东京02", "日本 东京02"], ["拦截", "拦截"]].forEach(function (pair) {
+        var div = document.createElement("div");
+        div.className = "count";
+        var b = document.createElement("b"); b.textContent = c[pair[0]] || 0;
+        var s = document.createElement("span"); s.textContent = pair[1];
+        div.appendChild(b); div.appendChild(s);
+        cl.appendChild(div);
+      });
+
+      var tb = document.getElementById("connBody");
+      tb.innerHTML = "";
+      var entries = d.entries || [];
+      if (!entries.length) {
+        var tr = document.createElement("tr");
+        var td = document.createElement("td");
+        td.colSpan = 4; td.className = "muted"; td.textContent = "暂无连接记录（网关日志为空或 Xray 未运行）";
+        tr.appendChild(td); tb.appendChild(tr);
+      }
+      entries.forEach(function (e) {
+        var tr = document.createElement("tr");
+        var td1 = document.createElement("td"); td1.textContent = fmtTime(e.time);
+        var td2 = document.createElement("td"); td2.className = "ip"; td2.textContent = e.src || "-";
+        var td3 = document.createElement("td"); td3.className = "domain"; td3.textContent = e.domain || "-"; td3.title = e.domain || "";
+        var td4 = document.createElement("td"); td4.className = routeClass(e.route); td4.textContent = e.route || "-";
+        tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3); tr.appendChild(td4);
+        tb.appendChild(tr);
+      });
+    }).catch(function () {
+      var st = document.getElementById("xrayStatus");
+      st.textContent = "面板接口异常";
+      st.className = "status off";
+    });
+  }
+
+  function fmtGB(bytes) {
+    return (bytes / 1000000000).toFixed(1) + " GB";
+  }
+
+  function fmtExpire(ts) {
+    if (!ts) return "长期有效";
+    var d = new Date(ts * 1000);
+    var m = ("0" + (d.getMonth() + 1)).slice(-2);
+    var day = ("0" + d.getDate()).slice(-2);
+    return "到期：" + d.getFullYear() + "-" + m + "-" + day;
+  }
+
+  // Remaining subscription traffic. Fetched ONLY when the user presses
+  // 查询 — never by the 30s auto-refresh, so the airport is not hammered.
+  var trafficSub = null;
+  function fetchTraffic() {
+    var btn = document.getElementById("trafficBtn");
+    var errBox = document.getElementById("trafficErr");
+    var result = document.getElementById("trafficResult");
+    if (!trafficSub) return Promise.resolve();
+    btn.disabled = true;
+    btn.textContent = "查询中…";
+    return fetch("/api/traffic", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sub: trafficSub })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      btn.disabled = false;
+      btn.textContent = "查询";
+      if (!d.ok) {
+        result.style.display = "none";
+        var msg = d.error === "no_userinfo"
+          ? "订阅里没有流量信息。"
+          : "拉取订阅失败，检查小米8能不能打开订阅链接（可能需要先开小米8自己的代理）。";
+        errBox.innerHTML = '<div class="err">' + msg + "</div>";
+        return;
+      }
+      errBox.innerHTML = "";
+      result.style.display = "block";
+      document.getElementById("trafficRemain").textContent = fmtGB(d.remaining_bytes);
+      var pct = d.total_bytes > 0 ? (d.used_bytes / d.total_bytes * 100) : 0;
+      document.getElementById("trafficBar").style.width = Math.min(pct, 100) + "%";
+      document.getElementById("trafficDetail").textContent =
+        "已用 " + fmtGB(d.used_bytes) + " / 总量 " + fmtGB(d.total_bytes) + " · " + fmtExpire(d.expire);
+    }).catch(function () {
+      btn.disabled = false;
+      btn.textContent = "查询";
+      result.style.display = "none";
+      errBox.innerHTML = '<div class="err">连不上本机面板接口，请刷新页面重试。</div>';
+    });
+  }
+
+  function aghFetch() {
+    if (!aghCreds) return Promise.resolve();
+    return fetch("/api/agh", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(aghCreds)
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      var errBox = document.getElementById("aghLoginErr");
+      if (d.error) {
+        var msg = d.error === "agh_auth_failed" ? "AGH 密码不对，请重新输入。" : "连不上 AGH（可能未运行），请稍后再试。";
+        errBox.innerHTML = '<div class="err">' + msg + "</div>";
+        document.getElementById("aghLogin").style.display = "block";
+        document.getElementById("aghData").style.display = "none";
+        aghCreds = null;
+        sessionStorage.removeItem("aghCreds");
+        return;
+      }
+      errBox.innerHTML = "";
+      document.getElementById("aghLogin").style.display = "none";
+      document.getElementById("aghData").style.display = "block";
+      renderAgh(d);
+    }).catch(function () {
+      document.getElementById("aghLoginErr").innerHTML = '<div class="err">连不上本机面板接口，请刷新页面重试。</div>';
+    });
+  }
+
+  // Compact number formatting: 2715897 -> "271.6万", 123456789 -> "1.2亿".
+  // Prevents huge raw numbers from overflowing their cards.
+  function fmtNum(n) {
+    if (typeof n !== "number" || !isFinite(n)) return "—";
+    if (n >= 100000000) return (n / 100000000).toFixed(1) + "亿";
+    if (n >= 10000) return (n / 10000).toFixed(1) + "万";
+    return n.toLocaleString("en-US");
+  }
+
+  // Sum a stat that may be a scalar, an array of numbers, or an object
+  // map of numbers. Used as a fallback if the server ever passes the
+  // raw AGH shapes through without normalizing them.
+  function sumStat(v) {
+    if (typeof v === "number" && isFinite(v)) return v;
+    if (Array.isArray(v)) {
+      var s = 0, ok = false;
+      v.forEach(function (x) { if (typeof x === "number" && isFinite(x)) { s += x; ok = true; } });
+      return ok ? s : null;
+    }
+    if (v && typeof v === "object") {
+      var s2 = 0, ok2 = false;
+      Object.keys(v).forEach(function (k) { var x = v[k]; if (typeof x === "number" && isFinite(x)) { s2 += x; ok2 = true; } });
+      return ok2 ? s2 : null;
+    }
+    return null;
+  }
+
+  function renderAgh(d) {
+    // The server normalizes stats to {total, blocked, blocked_pct,
+    // top_blocked: [{domain, count}], top_queried: [{domain, count}]}
+    // and the query log to {entries: [{time, client, domain, blocked}]}.
+    var stats = d.stats || {};
+    var total = stats.total;
+    if (typeof total !== "number") total = sumStat(stats.dns_queries);
+    var blocked = stats.blocked;
+    if (typeof blocked !== "number") blocked = sumStat(stats.blocked_filtering);
+    var pct = stats.blocked_pct;
+    if (typeof pct !== "number" || !isFinite(pct)) {
+      pct = (typeof total === "number" && typeof blocked === "number" && total > 0)
+        ? (blocked / total * 100) : null;
+    }
+    var pctText = (typeof pct === "number" && isFinite(pct)) ? pct.toFixed(1) + "%" : "—";
+    var sg = document.getElementById("aghStats");
+    sg.innerHTML = "";
+    [["总查询", fmtNum(total)], ["已拦截", fmtNum(blocked)], ["拦截率", pctText]].forEach(function (pair) {
+      var div = document.createElement("div");
+      div.className = "stat";
+      var b = document.createElement("b"); b.textContent = pair[1];
+      var s = document.createElement("span"); s.textContent = pair[0];
+      div.appendChild(b); div.appendChild(s);
+      sg.appendChild(div);
+    });
+
+    // Defensive fallback: accept the raw AGH shapes too, in case the
+    // server ever passes them through unchanged (object map, array of
+    // [domain, count] pairs, or array of {domain|name, count} objects).
+    function normalizeTop(list) {
+      var pairs = [];
+      if (!list) return pairs;
+      if (Array.isArray(list)) {
+        list.forEach(function (item) {
+          if (Array.isArray(item) && item.length >= 2) {
+            pairs.push({ domain: String(item[0]), count: Number(item[1]) || 0 });
+          } else if (item && typeof item === "object") {
+            var dm = item.domain || item.name || item.key || "";
+            if (dm) pairs.push({ domain: String(dm), count: Number(item.count || item.value || 0) || 0 });
+          } else if (typeof item === "string" && item) {
+            pairs.push({ domain: item, count: 0 });
+          }
+        });
+      } else if (typeof list === "object") {
+        Object.keys(list).forEach(function (k) {
+          pairs.push({ domain: k, count: Number(list[k]) || 0 });
+        });
+      }
+      pairs.sort(function (a, b) { return b.count - a.count; });
+      return pairs.slice(0, 10);
+    }
+
+    function fillTop(elId, list) {
+      var ol = document.getElementById(elId);
+      ol.innerHTML = "";
+      normalizeTop(list).forEach(function (item) {
+        var li = document.createElement("li");
+        li.textContent = item.domain + "（" + item.count.toLocaleString("en-US") + " 次）";
+        ol.appendChild(li);
+      });
+      if (!ol.children.length) {
+        var li = document.createElement("li");
+        li.textContent = "暂无数据";
+        ol.appendChild(li);
+      }
+    }
+    fillTop("topBlocked", stats.top_blocked || stats.top_blocked_domains);
+    fillTop("topQueried", stats.top_queried || stats.top_queried_domains);
+
+    var qb = document.getElementById("queryBody");
+    qb.innerHTML = "";
+    var rows = [];
+    if (d.query_log) {
+      if (Array.isArray(d.query_log.entries)) rows = d.query_log.entries;
+      else if (Array.isArray(d.query_log.data)) rows = d.query_log.data;
+      else if (Array.isArray(d.query_log)) rows = d.query_log;
+    }
+    if (!rows.length) {
+      var tr = document.createElement("tr");
+      var td = document.createElement("td");
+      td.colSpan = 4; td.className = "muted"; td.textContent = "暂无查询记录";
+      tr.appendChild(td); qb.appendChild(tr);
+    }
+    rows.forEach(function (q) {
+      var tr = document.createElement("tr");
+      var t = document.createElement("td");
+      var raw = q.time || "";
+      t.textContent = typeof raw === "string" ? raw.replace("T", " ").slice(0, 19) : String(raw || "");
+      var c = document.createElement("td"); c.textContent = q.client || "-";
+      var dm = document.createElement("td"); dm.className = "domain";
+      var dom = (q.question && (q.question.name || q.question.domain)) || q.domain || q.name || "-";
+      dm.textContent = dom;
+      dm.title = dom;
+      var rs = document.createElement("td");
+      var isBlocked = q.blocked === true;
+      if (q.blocked !== true && q.blocked !== false) {
+        var reason = String(q.reason || "").toLowerCase();
+        var status = String(q.status || "").toLowerCase();
+        isBlocked = reason.indexOf("filtered") === 0 || status.indexOf("filtered") === 0;
+      }
+      rs.textContent = isBlocked ? "已拦截" : "放行";
+      rs.className = isBlocked ? "blocked-tag" : "allowed-tag";
+      tr.appendChild(t); tr.appendChild(c); tr.appendChild(dm); tr.appendChild(rs);
+      qb.appendChild(tr);
+    });
+  }
+
+  function refreshAll() {
+    var p1 = loadProxy();
+    var p2 = aghFetch();
+    Promise.all([p1, p2]).then(function () {
+      var now = new Date();
+      document.getElementById("updated").textContent = "上次刷新：" + now.toLocaleString("zh-CN");
+    });
+  }
+
+  function startAuto() {
+    stopAuto();
+    if (document.getElementById("autoToggle").checked) {
+      autoTimer = setInterval(refreshAll, 30000);
+    }
+  }
+  function stopAuto() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+
+  // Self-update: show the running version, and update from GitHub on
+  // button click only (never auto-checked by the 30s refresh).
+  function loadVersion() {
+    fetch("/api/version").then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.version) {
+        document.getElementById("versionLabel").textContent = "v" + d.version;
+      }
+    }).catch(function () {});
+  }
+
+  document.getElementById("updateBtn").addEventListener("click", function () {
+    var btn = document.getElementById("updateBtn");
+    var msg = document.getElementById("updateMsg");
+    btn.disabled = true;
+    btn.textContent = "正在更新…";
+    msg.textContent = "";
+    fetch("/api/update", { method: "POST" }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.ok) {
+        if (d.already_latest) {
+          msg.textContent = "已是最新版。";
+          msg.style.color = "var(--green)";
+          btn.disabled = false;
+          btn.textContent = "在线更新";
+        } else {
+          msg.textContent = "更新成功，正在重启…";
+          msg.style.color = "var(--green)";
+          setTimeout(function () { window.location.reload(); }, 3000);
+        }
+      } else {
+        var m = (d && d.error === "download_invalid")
+          ? "更新失败：下载的文件校验不对。"
+          : "更新失败：拉不到 GitHub，可能需要先开小米8自己的代理。";
+        msg.textContent = m;
+        msg.style.color = "var(--red)";
+        btn.disabled = false;
+        btn.textContent = "在线更新";
+      }
+    }).catch(function () {
+      msg.textContent = "更新失败：连不上本机面板接口，请刷新页面重试。";
+      msg.style.color = "var(--red)";
+      btn.disabled = false;
+      btn.textContent = "在线更新";
+    });
+  });
+
+  document.getElementById("refreshBtn").addEventListener("click", refreshAll);
+  document.getElementById("autoToggle").addEventListener("change", startAuto);
+
+  document.getElementById("trafficBtn").addEventListener("click", function () {
+    var v = document.getElementById("trafficSub").value.trim();
+    if (!v) {
+      document.getElementById("trafficErr").innerHTML = '<div class="err">请先粘贴订阅链接。</div>';
+      return;
+    }
+    trafficSub = v;
+    try { sessionStorage.setItem("trafficSub", v); } catch (e) {}
+    fetchTraffic();
+  });
+
+  document.getElementById("aghConnectBtn").addEventListener("click", function () {
+    var u = document.getElementById("aghUser").value.trim() || "admin";
+    var p = document.getElementById("aghPass").value;
+    if (!p) {
+      document.getElementById("aghLoginErr").innerHTML = '<div class="err">请先输入 AGH 管理密码。</div>';
+      return;
+    }
+    aghCreds = { u: u, p: p };
+    try { sessionStorage.setItem("aghCreds", JSON.stringify(aghCreds)); } catch (e) {}
+    aghFetch();
+  });
+
+  document.getElementById("aghDisconnectBtn").addEventListener("click", function () {
+    aghCreds = null;
+    try { sessionStorage.removeItem("aghCreds"); } catch (e) {}
+    document.getElementById("aghPass").value = "";
+    document.getElementById("aghLogin").style.display = "block";
+    document.getElementById("aghData").style.display = "none";
+  });
+
+  try {
+    var saved = sessionStorage.getItem("aghCreds");
+    if (saved) aghCreds = JSON.parse(saved);
+  } catch (e) { aghCreds = null; }
+
+  try {
+    var savedSub = sessionStorage.getItem("trafficSub");
+    if (savedSub) {
+      trafficSub = savedSub;
+      document.getElementById("trafficSub").value = savedSub;
+    }
+  } catch (e) { trafficSub = null; }
+
+  loadVersion();
+  refreshAll();
+  startAuto();
+})();
+</script>
+</body>
+</html>
